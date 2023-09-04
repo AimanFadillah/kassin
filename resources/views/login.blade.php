@@ -2,7 +2,7 @@
 
 @section('main')
 
-<div class="container my-5" >
+<div class="container" >
     <div class="row justify-content-center">
         <div class="col-md-5 rounded p-2 pt-4 pb-3 bg-putih bayangan ">
             <h1 class="fw-bold text-center fs-2 biru-commit" >Selamat Datang Di Kassin</h1>

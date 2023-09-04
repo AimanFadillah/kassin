@@ -18,6 +18,9 @@ Route::middleware("auth")->group(function () {
     Route::get("/",function () {
         return view("dashbord");
     });
+    Route::get("/anggota",function ( ){
+        return view("anggota");
+    });
     Route::get("/logout",[LoginController::class,"logout"]);
 });
 

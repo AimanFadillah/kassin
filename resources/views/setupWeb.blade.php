@@ -8,11 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         @font-face {
             font-family: 'satoshi';
             src: url('/font/Satoshi-Variable.ttf')
         }
+
+        
 
         .bayangan { 
             box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
@@ -20,6 +23,18 @@
 
         .biru-commit {
             color: #3568FF;
+        }
+
+        .hitam-commit {
+          color: #14171C;
+        }
+
+        .putih {
+          color: #ffffff
+        }
+
+        .bg-hitam-commit {
+          background-color: #14171C;
         }
 
         .bg-biru-commit {
@@ -41,10 +56,42 @@
         }
     </style>
 </head>
-
-  <body class="bg-biru-commit" >
+  <body class="bg-hitam-commit" >
+    <nav class="navbar bg-body-tertiary bg-putih fixed-top {{ Request::is("login") ? "d-none" : ""}}">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold hitam-commit fs-3" href="/">Kassin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title fs-3 hitam-commit" id="offcanvasNavbarLabel">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link hitam-commit fw-bold" aria-current="page" href="/"><i class="bi bi-house-door-fill"></i> Beranda</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link hitam-commit fw-bold" href="#"><i class="bi bi-graph-up-arrow"></i> Kas Masuk</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link hitam-commit fw-bold" href="#"><i class="bi bi-graph-down-arrow"></i> Kas Keluar</a>
+                  </li>
+                <li class="nav-item ">
+                    <a class="nav-link hitam-commit fw-bold" href="/anggota"><i class="bi bi-people-fill"></i> Anggota</a>
+                  </li>
+                <li class="nav-item ">
+                    <a class="nav-link hitam-commit fw-bold" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </nav>
     
-    <div class="container">
+    <div style="margin-top: 80px" class="container {{ Request::is("login") ? "mt-5" : ""}}">
         @yield('main')
     </div>
 
