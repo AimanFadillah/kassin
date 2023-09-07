@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" > --}}
     <title>Kassin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,9 +55,41 @@
         *{
             font-family: 'satoshi', sans-serif;
         }
-    </style>
+
+        .loading-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Latar belakang semi-transparan */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999; /* Mengatur lapisan tampilan tinggi agar tampilan loading muncul di atas elemen lain */
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #14171C;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.5s linear infinite; /* Animasi putaran */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>  
+    <script src="/js/global.js" ></script>
 </head>
   <body class="bg-hitam-commit" >
+    <div id="loadingScreen" class="loading-screen" style="display: none">
+      <div class="spinner"></div>
+    </div>
     <nav class="navbar bg-body-tertiary bg-putih fixed-top {{ Request::is("login") ? "d-none" : ""}}">
         <div class="container-fluid">
           <a class="navbar-brand fw-bold hitam-commit fs-3" href="/">Kassin</a>

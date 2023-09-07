@@ -7,45 +7,48 @@
         <div class="p-0 col-md-10 d-flex justify-content-between align-items-center">
             <h2 class="putih">Anggota</h2>
             <div>   
-                <button type="button" class="btn btn-light fw-bold"><i class="bi bi-search"></i> Cari</button>
-                <button type="button" class="btn btn-light fw-bold" data-bs-toggle="modal" data-bs-target="#createModal" ><i class="bi bi-plus-lg"></i> Tambah</button>
+                <button type="button" id="buttonCari" class="btn btn-light fw-bold"><i class="bi bi-search"></i> Cari</button>
+                <button type="button" class="btn btn-light fw-bold" data-bs-toggle="modal" data-bs-target="#createModal" data-type="create" ><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#createModal" data-type="create"></i> Tambah</button>
             </div>
         </div>
-        <div class="rounded col-md-10 my-1 bg-putih p-2 d-flex justify-content-between align-items-center">
-            <h4>test</h4>
-            <div>
-                <button type="button" class="btn btn-primary fw-bold"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger fw-bold"><i class="bi bi-trash"></i></button>
-            </div>
+        <div class="col-md-10 p-0" id="cari" style="display: none">
+          <form id="formCari">
+            <input type="search" id="inputCari" name="cari" class="form-control my-1" placeholder="Cari Anggota..." >
+          </form>
         </div>
-        <div class="rounded col-md-10 my-1 bg-putih p-2">
-            <h4>test</h4>
-        </div>
-        <div class="rounded col-md-10 my-1 bg-putih p-2">
-            <h4>test</h4>
-        </div>
-        <div class="rounded col-md-10 my-1 bg-putih p-2">
-            <h4>test</h4>
-        </div>
+    </div>
+    <div class="row justify-content-center" id="containerData" >
+
     </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade border-none" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-body" >
+          <form id="formCreate" data-method="POST" >
+            @csrf
+            <div class="bodyModal">
+              <h4 class="hitam-commit text-center ">Tambah Anggota</h4>
+              <div class="mb-3 mt-2">
+                <label for="name" class="form-label" >Nama</label>
+                <input type="text" required class="form-control" id="name" name="name" >
+              </div>
+              <div class="d-flex justify-content-center">
+                <button id="buttonSubmit" class="btn btn-success" style="width: 100%" >Buat</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <div class="modal-footer d-none">
+          <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
+
+ 
+
+<script src="/js/sistem.js"></script>
 @endsection 

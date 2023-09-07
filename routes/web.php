@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +19,10 @@ Route::middleware("auth")->group(function () {
     Route::get("/",function () {
         return view("dashbord");
     });
-    Route::get("/anggota",function ( ){
-        return view("anggota");
-    });
+    Route::get("/anggota",[AnggotaController::class,"index"]);
+    Route::post("/anggota",[AnggotaController::class,"store"]);
+    Route::put("/anggota/{Anggota:id}/",[AnggotaController::class,"update"]);
+    Route::delete("/anggota/{Anggota:id}/",[AnggotaController::class,"destroy"]);
     Route::get("/logout",[LoginController::class,"logout"]);
 });
 
