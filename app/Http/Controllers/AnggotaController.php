@@ -17,7 +17,27 @@ class AnggotaController extends Controller
                 return response()->json(Anggota::find($request->query("id")));
             }
 
-            return response()->json(Anggota::latest()->get());
+            if($request->query("show")){
+                $anggota = Anggota::find($request->query("show")); 
+                $data = [
+                    [
+                        "name" => "Nama",
+                        "value" => $anggota->name,
+                    ],
+                    [
+                        "name" => "Dibuat",
+                        "value" => $anggota->created_at->format("d-m-Y"),
+                    ],
+                    [
+                        "name" => "Diperbarui",
+                        "value" => $anggota->updated_at->format("d-m-Y"),
+                    ],
+                    
+                ];
+                return response()->json($data);
+            }
+
+            return response()->json(Anggota::where("name","like","%".$request->query("cari")."%")->latest()->paginate(15));
         }
 
         return view("anggota");
@@ -26,7 +46,7 @@ class AnggotaController extends Controller
     public function store (Request $request){
         try{
             $validatedData = $request->validate([
-                "name" => "required|unique:anggotas",
+                "name" => "required|unique:anggotas|max:20",
             ]);
         }catch (ValidationException $e) {
             return response()->json($this->pesanError($e));
@@ -38,17 +58,22 @@ class AnggotaController extends Controller
     }
 
     public function update (Request $request,Anggota $Anggota){
+
+        $rules = ["name" => "required|max:20"];
+
+        if($Anggota->name !== $request->input("name")){
+            $rules["name"] = "required|unique:anggotas|max:20";
+        }
+
         try{
-            $validatedData = $request->validate([
-                "name" => "required|unique:anggotas",
-            ]);
+            $validatedData = $request->validate($rules);
         }catch (ValidationException $e) {
             return response()->json($this->pesanError($e));
         }
 
         Anggota::where("id",$Anggota->id)->update($validatedData);
 
-        return response()->json($this->pesanSuccess($validatedData["name"]));
+        return response()->json($this->pesanSuccess($validatedData));
     }
 
     public function destroy (Anggota $Anggota){

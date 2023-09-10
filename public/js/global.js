@@ -26,6 +26,10 @@ async function setupData (link = window.location.href){
     return data;
 }
 
+function XSS (text){
+    return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function loading(pilihan = true){
     const loadingScreen = document.querySelector("#loadingScreen");
     loadingScreen.style.display = pilihan ? "" : "none";

@@ -7,16 +7,24 @@ const containerData = document.querySelector("#containerData");
 const modalBody = document.querySelector(".bodyModal");
 const modalCreate = modalBody.innerHTML;
 const formCreate = document.querySelector("#formCreate");
+const bentukData = containerData.innerHTML;
+let search = "";
+let page = 1;
+let pageLast;
+let timer ;
 
 main()
 
 buttonCari.addEventListener("click",() => cari.style.display = "block")
 
+
 formCari.addEventListener("submit",(e) => {
     e.preventDefault();
-    console.log(inputCari.value)
+    search = inputCari.value;
+    refreshData();
 })
 
+document.addEventListener("scroll",handleScroll);
 document.addEventListener("submit",async (e) => {
     e.preventDefault()
     
@@ -46,11 +54,24 @@ document.addEventListener("submit",async (e) => {
 })
 
 document.addEventListener("click",async (e) => {    
-    console.log(e.target)
 
     if(e.target.getAttribute("data-bs-target")){
         const type = e.target.getAttribute("data-type");
-        if(type == "create"){
+        if(type == "show"){
+            modalLoading()
+            const id = encodeURIComponent(e.target.getAttribute("data-id"));
+            const data = await setupData(window.location.href + "?show=" + id);
+            modalBody.innerHTML = `<ul class="list-group"></ul>`
+            const list = modalBody.querySelector(".list-group");
+            for(dt of data){
+                list.innerHTML += `
+                    <li  class="list-group-item d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold" >${XSS(dt.name)}</h6>
+                        <h6>${XSS(dt.value)}</h6>
+                    </li>
+                `
+            }
+        }else if(type == "create"){
             formCreate.setAttribute("data-action",window.location.href)
             formCreate.setAttribute("data-method","POST");
             if(modalBody.innerHTML !== modalCreate) return modalBody.innerHTML = modalCreate;
@@ -83,7 +104,7 @@ document.addEventListener("click",async (e) => {
 
 
 function main () {
-    tampilkanData()
+    refreshData()
 }
 
 function modalLoading() {
@@ -94,23 +115,23 @@ function modalLoading() {
     `
 }
 
-function tambahData (data,atas = false) {
-    const isi = `
-    <div id="data${data.id}" class="data rounded col-md-10 my-1 bg-putih p-2 d-flex justify-content-between align-items-center">
-        <h4>${data.name}</h4>
-        <div>
-            <button type="button"  data-bs-toggle="modal" data-bs-target="#createModal" data-type="edit" class="btn btn-primary fw-bold" data-id="${data.id}" ><i data-id="${data.id}" data-type="edit" data-bs-toggle="modal" data-bs-target="#createModal" class="bi bi-pencil-square"></i></button>
-            <button type="button"  data-bs-toggle="modal" data-bs-target="#createModal" data-type="delete" class="btn btn-danger fw-bold" data-id="${data.id}" ><i data-id="${data.id}" data-type="delete" data-bs-toggle="modal" data-bs-target="#createModal" class="bi bi-trash"></i></button>
-        </div>
-    </div>
-    `
-    containerData.innerHTML = atas ? isi + containerData.innerHTML : containerData.innerHTML + isi;
+function tambahData (data,atas = false) { 
+    let bentuk = bentukData;
+    for(key of Object.keys(data)){
+        if(bentuk.includes("${data." + key + "}")){
+            bentuk = bentuk.replace(new RegExp(`\\$\\{data\\.${key}\\}`,"g"),XSS(data[key]));
+        }
+    }
+    const isi = bentuk;
+    containerData.innerHTML = atas ? isi + containerData.innerHTML : containerData.innerHTML + isi; 
 }
 
 function editData (id,value){
-    const data = document.getElementById(`data${decodeURIComponent(id)}`);
-    const h4 = data.querySelectorAll("h4")[0];
-    h4.innerHTML = value;
+    const data = document.getElementById(`data${decodeURIComponent(id)}`); 
+    const fieldEdit = data.querySelectorAll(".fieldEdit");
+    for(field of fieldEdit){
+        field.innerHTML = value[field.getAttribute("data-edit")]
+    }
 }
 
 function hapusData (id){
@@ -118,11 +139,44 @@ function hapusData (id){
     containerData.removeChild(data);
 }
 
+function refreshData (){
+    containerData.innerHTML = "";
+    page = 1;
+    pageLast = 0;
+    if(!document.addEventListener("scroll",handleScroll)){
+        document.addEventListener("scroll",handleScroll)
+    }
+    tampilkanData()
+}
+
+function handleScroll() {
+    clearTimeout(timer); 
+    timer = setTimeout(() => { 
+      const windowHeight = window.innerHeight; 
+      const fullHeight = document.body.scrollHeight; 
+      const scrollOffset = document.documentElement.scrollTop;
+      
+      if (scrollOffset + windowHeight + 30 >= fullHeight) { 
+        page++
+        tampilkanData()
+        checkEventScroll();
+      }
+    },500) // timer
+}
+
+function checkEventScroll(){
+    if(page >= pageLast){
+        document.removeEventListener("scroll",handleScroll);
+    }
+}
+
 async function tampilkanData () {
     loading()
-    const data = await setupData();
-    for(dt of data){
+    const data = await setupData(`${window.location.href}?cari=${search}&page=${page}`);
+    pageLast = data.last_page
+    for(dt of data.data){
         tambahData(dt);
     }
+    checkEventScroll();
     loading(false)
 }
