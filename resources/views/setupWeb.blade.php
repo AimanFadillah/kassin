@@ -107,7 +107,7 @@
                     <a class="nav-link hitam-commit fw-bold" aria-current="page" href="/"><i class="bi bi-house-door-fill"></i> Beranda</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link hitam-commit fw-bold" href="#"><i class="bi bi-graph-up-arrow"></i> Kas Masuk</a>
+                    <a class="nav-link hitam-commit fw-bold" href="/kas-masuk"><i class="bi bi-graph-up-arrow"></i> Kas Masuk</a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link hitam-commit fw-bold" href="#"><i class="bi bi-graph-down-arrow"></i> Kas Keluar</a>

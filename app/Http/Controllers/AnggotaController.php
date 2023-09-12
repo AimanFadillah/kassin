@@ -25,6 +25,10 @@ class AnggotaController extends Controller
                         "value" => $anggota->name,
                     ],
                     [
+                        "name" => "Kas",
+                        "value" => strval($anggota->Kas->sum("uang")),
+                    ],
+                    [
                         "name" => "Dibuat",
                         "value" => $anggota->created_at->format("d-m-Y"),
                     ],

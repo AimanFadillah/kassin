@@ -8,6 +8,7 @@ const modalBody = document.querySelector(".bodyModal");
 const modalCreate = modalBody.innerHTML;
 const formCreate = document.querySelector("#formCreate");
 const bentukData = containerData.innerHTML;
+const judul = document.querySelector("#judul").innerHTML;
 let search = "";
 let page = 1;
 let pageLast;
@@ -67,15 +68,17 @@ document.addEventListener("click",async (e) => {
                 list.innerHTML += `
                     <li  class="list-group-item d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold" >${XSS(dt.name)}</h6>
-                        <h6>${XSS(dt.value)}</h6>
+                        <h6>${Number(dt.value) ? dt.value : XSS(dt.value)}</h6>
                     </li>
                 `
             }
         }else if(type == "create"){
             formCreate.setAttribute("data-action",window.location.href)
             formCreate.setAttribute("data-method","POST");
-            if(modalBody.innerHTML !== modalCreate) return modalBody.innerHTML = modalCreate;
-        }else {
+            modalBody.innerHTML !== modalCreate ? modalBody.innerHTML = modalCreate : undefined;
+            ubahJudul("Tambah");
+            ubahButton("Buat")
+        }else { 
             const id = encodeURIComponent(e.target.getAttribute("data-id"));
             formCreate.setAttribute("data-action",window.location.href + "/" + id + "/" )
             if(type === "delete"){
@@ -92,9 +95,25 @@ document.addEventListener("click",async (e) => {
                 const data = await setupData(window.location.href + "?id=" + id);
                 formCreate.setAttribute("data-method","PUT");
                 modalBody.innerHTML = modalCreate;
+                ubahJudul("Edit");
+                ubahButton("Ubah")
                 const inputs =  modalBody.querySelectorAll("input");
                 for(input of inputs){
                     input.setAttribute("value",data[input.getAttribute("name")])
+                }
+                const selects =  modalBody.querySelectorAll("select");
+                if(selects.length != 0){
+                    const idSelect = e.target.getAttribute("data-select").split(",");
+                    let loop = 0 ;
+                    for(select of selects){
+                        const options = select.querySelectorAll("option");
+                        for(option of options){
+                            if(option.getAttribute("value") === idSelect[loop]){
+                                option.setAttribute("selected","");
+                            }
+                        }
+                        loop++
+                    }
                 }
             }
         }
@@ -102,6 +121,15 @@ document.addEventListener("click",async (e) => {
 
 })
 
+function ubahJudul(data){
+    const h4 = modalBody.querySelector("h4");
+    h4.innerHTML = `${data} ${judul}`
+}
+
+function ubahButton (data) {
+    const buttonSubmit = document.querySelector("#buttonSubmit")
+    buttonSubmit.innerHTML = data;
+}
 
 function main () {
     refreshData()
@@ -119,7 +147,7 @@ function tambahData (data,atas = false) {
     let bentuk = bentukData;
     for(key of Object.keys(data)){
         if(bentuk.includes("${data." + key + "}")){
-            bentuk = bentuk.replace(new RegExp(`\\$\\{data\\.${key}\\}`,"g"),XSS(data[key]));
+            bentuk = bentuk.replace(new RegExp(`\\$\\{data\\.${key}\\}`,"g"), Number(data[key]) ? data[key] : XSS(data[key]) );
         }
     }
     const isi = bentuk;
@@ -128,9 +156,20 @@ function tambahData (data,atas = false) {
 
 function editData (id,value){
     const data = document.getElementById(`data${decodeURIComponent(id)}`); 
+    if(value.selectId){
+        const buttonEdit = data.querySelectorAll(".editButton");
+        const selectId = value.selectId;
+        let loop = 0;
+        for(button of buttonEdit){
+            if(button.getAttribute("data-select")){
+                button.setAttribute("data-select","");
+                button.setAttribute("data-select",button.getAttribute("data-select") + selectId)
+            }
+        }
+    }
     const fieldEdit = data.querySelectorAll(".fieldEdit");
     for(field of fieldEdit){
-        field.innerHTML = value[field.getAttribute("data-edit")]
+        field.innerHTML = Number(value[field.getAttribute("data-edit")]) ? value[field.getAttribute("data-edit")] : XSS(value[field.getAttribute("data-edit")]);
     }
 }
 

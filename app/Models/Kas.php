@@ -3,17 +3,16 @@
 namespace App\Models;
 
 use App\traits\Uuid;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Anggota extends Model
+class Kas extends Model
 {
     use HasFactory,Uuid;
 
     protected $guarded = ["id"];
 
-    public function Kas () {
-        return $this->hasMany(Kas::class);
+    public function Anggota () {
+        return $this->belongsTo(Anggota::class);
     }
 }

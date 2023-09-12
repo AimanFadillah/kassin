@@ -16,5 +16,9 @@ Trait Pesan {
         return $pesan;
     }
 
+    public function formatUang ($data){
+        $new = "Rp" . number_format($data,0,",",".");
+        return $new;
+    }
 
 }
