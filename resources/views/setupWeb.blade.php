@@ -110,7 +110,7 @@
                     <a class="nav-link hitam-commit fw-bold" href="/kas-masuk"><i class="bi bi-graph-up-arrow"></i> Kas Masuk</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link hitam-commit fw-bold" href="#"><i class="bi bi-graph-down-arrow"></i> Kas Keluar</a>
+                    <a class="nav-link hitam-commit fw-bold" href="/kas-keluar"><i class="bi bi-graph-down-arrow"></i> Kas Keluar</a>
                   </li>
                 <li class="nav-item ">
                     <a class="nav-link hitam-commit fw-bold" href="/anggota"><i class="bi bi-people-fill"></i> Anggota</a>

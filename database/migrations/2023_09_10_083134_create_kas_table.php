@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('kas', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("anggota_id");
+            $table->foreignUuid("anggota_id")->nullable();
             $table->string("catatan")->nullable();
             $table->integer("uang");
             $table->timestamps();

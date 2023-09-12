@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\KasController;
+use App\Http\Controllers\KeluarController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,11 @@ Route::middleware("auth")->group(function () {
     Route::post("/kas-masuk",[KasController::class,"store"]);
     Route::put("/kas-masuk/{Kas:id}/",[KasController::class,"update"]);
     Route::delete("/kas-masuk/{Kas:id}/",[KasController::class,"destroy"]);
+
+    Route::get("/kas-keluar",[KeluarController::class,"index"]);
+    Route::post("/kas-keluar",[KeluarController::class,"store"]);
+    Route::put("/kas-keluar/{Kas:id}/",[KeluarController::class,"update"]);
+    Route::delete("/kas-keluar/{Kas:id}",[KeluarController::class,"destroy"]);
 });
 
 Route::middleware("guest")->group(function () {
