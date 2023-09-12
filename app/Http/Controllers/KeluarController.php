@@ -21,11 +21,15 @@ class KeluarController extends Controller
             }
 
             if($request->query("show")){
-                $kas = Kas::with("Anggota")->find($request->query("show")); 
+                $kas = Kas::find($request->query("show")); 
                 $data = [
                     [
-                        "name" => "Nama",
-                        "value" => $kas->Anggota->name,
+                        "name" => "Catatan",
+                        "value" => $kas->catatan,
+                    ],
+                    [
+                        "name" => "Uang",
+                        "value" => $this->formatUang(abs($kas->uang)),
                     ],
                     [
                         "name" => "Dibuat",

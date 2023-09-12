@@ -13,7 +13,10 @@
         </div>
         <div class="col-md-10 p-0" id="cari" style="display: none">
           <form id="formCari">
-            <input type="search" id="inputCari" name="cari" class="form-control my-1" placeholder="Cari Anggota..." >
+            <div class="input-group my-1">
+              <input type="search" id="inputCari" name="cari" class="form-control border-dark" placeholder="Cari Catatan..." >
+              <button class="btn bg-dark text-light fw-bold border border-dark" type="submit" ><i class="bi bi-search"></i></button>
+            </div>
           </form>
         </div>
     </div>

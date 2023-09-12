@@ -18,16 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware("auth")->group(function () {
-    Route::get("/",function () {
-        return view("dashbord");
-    });
     Route::get("/logout",[LoginController::class,"logout"]);
-
+    
     Route::get("/anggota",[AnggotaController::class,"index"]);
     Route::post("/anggota",[AnggotaController::class,"store"]);
     Route::put("/anggota/{Anggota:id}/",[AnggotaController::class,"update"]);
     Route::delete("/anggota/{Anggota:id}/",[AnggotaController::class,"destroy"]);
-
+    
+    Route::get("/",[KasController::class,"dashbord"]);
     Route::get("/kas-masuk",[KasController::class,"index"]);
     Route::post("/kas-masuk",[KasController::class,"store"]);
     Route::put("/kas-masuk/{Kas:id}/",[KasController::class,"update"]);

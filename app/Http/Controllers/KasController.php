@@ -12,6 +12,20 @@ class KasController extends Controller
 {
     use Pesan;
 
+    public function dashbord () {
+
+        $tabungan = $this->formatUang(Kas::sum("uang"));
+        $kas = $this->formatUang(Kas::where("uang",">",'0')->sum("uang"));
+        $keluar = $this->formatUang(abs(Kas::where("uang","<",'0')->sum("uang")));
+        $anggota = Anggota::count();
+        return view("dashbord",[
+            "tabungan" => $tabungan,
+            "kas" => $kas,
+            "keluar" => $keluar,
+            "anggota" => $anggota,
+        ]);
+    }
+
     public function index (Request $request){
         if($request->ajax()){
             if($request->query("id")){
@@ -22,8 +36,12 @@ class KasController extends Controller
                 $kas = Kas::with("Anggota")->find($request->query("show")); 
                 $data = [
                     [
-                        "name" => "Nama",
+                        "name" => "Anggota",
                         "value" => $kas->Anggota->name,
+                    ],
+                    [
+                        "name" => "Uang",
+                        "value" => $this->formatUang($kas->uang)
                     ],
                     [
                         "name" => "Dibuat",
